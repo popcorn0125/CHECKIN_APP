@@ -1,46 +1,27 @@
 // lib/pages/home_page.dart
 import 'package:flutter/material.dart';
+import 'package:checkinapp/widgets/custom_app_bar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   // 홈 화면의 UI (기존 CheckInScreen 코드를 그대로 옮김)
-  @override
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // 디자인 상 AppBar 구현
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        titleSpacing: 0,
-        leading: Container(
-          margin: const EdgeInsets.only(left: 16),
-          alignment: Alignment.center,
-          child: Container(
-            width: 28,
-            height: 28,
-            color: Colors.blue, // "T" 부분 (로고 대체)
-            child: const Center(
-              child: Text(
-                'T',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-        ),
-        title: const Text(
-          'CHECK IN',
-          style: TextStyle(
-            color: Colors.black54,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.menu, color: Colors.grey),
-            onPressed: () {Navigator.pushNamed(context, '/menu');},
-          ),
-        ],
+      // CustomAppBar로 교체
+      appBar: CustomAppBar(
+        onMenuPressed: () {
+          // 원래 AppBar에서 menu 아이콘을 눌렀을 때 Navigator.pushNamed(context, '/menu')를 호출했음
+          Navigator.pushNamed(context, '/menu');
+        },
+        onNotificationsPressed: () {
+          Navigator.pushNamed(context, '/alarm');
+        },
+        onProfilePressed: () {
+          Navigator.pushNamed(context, '/profile');
+        },
+
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
