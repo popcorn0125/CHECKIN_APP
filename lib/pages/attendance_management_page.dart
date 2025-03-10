@@ -19,7 +19,7 @@ class AttendanceManagementPage extends StatelessWidget {
         },
         onProfilePressed: () {
           Navigator.pushNamed(context, '/profile');
-        },
+        }, titleText: '',
         ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -27,6 +27,7 @@ class AttendanceManagementPage extends StatelessWidget {
           children: [
             // 1) 달력 부분 (2월 달력)
             Card(
+              color: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -165,6 +166,12 @@ class AttendanceManagementPage extends StatelessWidget {
               _buildTimeSlot('13:00 ~ 14:00', '출석', Colors.green),
               const SizedBox(height: 8),
               _buildTimeSlot('14:00 ~ 15:00', '출석', Colors.green),
+              const SizedBox(height: 8),
+              _buildTimeSlot('15:00 ~ 16:00', '출석', Colors.green),
+              const SizedBox(height: 8),
+              _buildTimeSlot('16:00 ~ 17:00', '출석', Colors.green),
+              const SizedBox(height: 8),
+              _buildTimeSlot('17:00 ~ 18:00', '결석', Colors.red),
             ],
           ),
         ],

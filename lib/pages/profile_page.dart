@@ -19,7 +19,7 @@ class ProfilePage extends StatelessWidget {
         },
         onProfilePressed: () {
           Navigator.pushNamed(context, '/profile');
-        },
+        }, titleText: '',
         
       ),
       body: SingleChildScrollView(
@@ -32,6 +32,7 @@ class ProfilePage extends StatelessWidget {
 
             // 정보 목록
             Card(
+              color: Colors.white,
               margin: const EdgeInsets.symmetric(horizontal: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),

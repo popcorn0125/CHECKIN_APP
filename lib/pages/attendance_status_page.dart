@@ -19,7 +19,7 @@ class AttendanceStatusPage extends StatelessWidget {
         },
         onProfilePressed: () {
           Navigator.pushNamed(context, '/profile');
-        },
+        }, titleText: '',
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -42,6 +42,7 @@ class AttendanceStatusPage extends StatelessWidget {
   // ------------------ 차시별 출석률(지원금) ------------------
   Widget _buildSessionAttendanceCard() {
     return Card(
+      color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -74,6 +75,7 @@ class AttendanceStatusPage extends StatelessWidget {
   // ------------------ 수업별 출석률(학점) ------------------
   Widget _buildCourseAttendanceCard() {
     return Card(
+      color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -117,6 +119,7 @@ class AttendanceStatusPage extends StatelessWidget {
   // ------------------ 전체 출석률 ------------------
   Widget _buildTotalAttendanceCard() {
     return Card(
+      color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Padding(
         padding: const EdgeInsets.all(16),

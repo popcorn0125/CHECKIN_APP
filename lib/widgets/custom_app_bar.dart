@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // systemOverlayStyle 설정용
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onProfilePressed;
@@ -9,7 +10,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     Key? key,
     this.onProfilePressed,
     this.onNotificationsPressed,
-    this.onMenuPressed,
+    this.onMenuPressed, required String titleText,
   }) : super(key: key);
 
   @override
@@ -17,13 +18,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
+      // surfaceTintColor가 투명하면, Material 3의 오버레이 효과가 적용되지 않습니다.
+      surfaceTintColor: Colors.transparent,
       elevation: 0,
-      centerTitle: false, // 왼쪽 정렬
+      centerTitle: false,
       titleSpacing: 0,
-      // leading 부분(로고)은 제거합니다.
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
       title: Container(
         alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.only(left: 16), // 원하는 만큼 여백 추가
+        padding: const EdgeInsets.only(left: 16),
         child: const Text(
           'CHECK IN',
           style: TextStyle(
@@ -33,17 +36,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: [
-        // 내 정보 아이콘
         IconButton(
           icon: const Icon(Icons.person, color: Colors.grey),
           onPressed: onProfilePressed,
         ),
-        // 알림 아이콘
         IconButton(
           icon: const Icon(Icons.notifications, color: Colors.grey),
           onPressed: onNotificationsPressed,
         ),
-        // 메뉴 아이콘
         IconButton(
           icon: const Icon(Icons.menu, color: Colors.grey),
           onPressed: onMenuPressed,

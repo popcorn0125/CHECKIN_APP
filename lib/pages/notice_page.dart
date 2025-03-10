@@ -37,7 +37,7 @@ class NoticePage extends StatelessWidget {
         },
         onProfilePressed: () {
           Navigator.pushNamed(context, '/profile');
-        },
+        }, titleText: '',
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
