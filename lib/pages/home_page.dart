@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             // (1) 인사말
             const Text(
-              '홍길동님, 반가워요!',
+              'ewkrjqwekrjkqwer님, 반가워요!',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
@@ -90,27 +90,42 @@ class _HomePageState extends State<HomePage> {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start, // ★ 왼쪽 정렬 적용
                   children: [
-                    // ★동적 날짜/요일 표시
+                    // 날짜/요일 표시 (왼쪽 정렬)
                     Text(
                       '오늘은 $_currentDate이에요 :)',
-                      style: const TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
                     ),
                     const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                    // 시간을 포함한 Column (왼쪽 정렬)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start, // ★ 텍스트 왼쪽 정렬
                       children: [
-                        // ★동적 시각 표시
                         Text(
                           _currentTime,
-                          style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            // TODO: 출석 처리 로직
-                          },
-                          child: const Text('출석'),
+                        const SizedBox(height: 16), // 버튼과 시간 사이 간격 조절
+                        SizedBox(
+                          width: double.infinity, // 버튼을 카드 가로 폭에 맞게 확장
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // TODO: 출석 처리 로직
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white, // 버튼 배경색
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15), // ★ 모서리 둥글게
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 14), // 버튼 높이 조정
+                            ),
+                            child: const Text(
+                              '출석',
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF3374F6)),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -148,8 +163,8 @@ class _HomePageState extends State<HomePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
-              Text('오늘의 출석률'),
-              Text('40%'),
+              Text('현재 차시 출석률', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+              Text('80%', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
             ],
           ),
           const SizedBox(height: 4),
@@ -158,8 +173,8 @@ class _HomePageState extends State<HomePage> {
             child: LinearProgressIndicator(
               value: 0.4,
               minHeight: 8,
-              backgroundColor: Colors.grey,
-              color: Colors.blue,
+              backgroundColor: Color(0xFFE5E7EB),
+              color: Color(0xFF3374F6),
             ),
           ),
           const SizedBox(height: 16),
@@ -167,8 +182,8 @@ class _HomePageState extends State<HomePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
-              Text('전체 출석률'),
-              Text('80%'),
+              Text('현재 교과목 출석률', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+              Text('95%', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
             ],
           ),
           const SizedBox(height: 4),
@@ -177,8 +192,8 @@ class _HomePageState extends State<HomePage> {
             child: LinearProgressIndicator(
               value: 0.8,
               minHeight: 8,
-              backgroundColor: Colors.grey,
-              color: Colors.blue,
+              backgroundColor: Color(0xFFE5E7EB),
+              color: Color(0xFF3374F6),
             ),
           ),
         ],
