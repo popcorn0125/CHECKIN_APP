@@ -1,7 +1,7 @@
 // lib/pages/home_page.dart
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // 시간 포맷팅용
-import 'dart:async';            // Timer 사용
+import 'dart:async'; // Timer 사용
 import 'package:checkinapp/widgets/custom_app_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,8 +13,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // 현재 시각(HH:mm:ss)와 날짜(월,일,요일) 문자열 변수
-  String _currentTime = '';  // 예: 14:40:05
-  String _currentDate = '';  // 예: 3월 21일 화요일
+  String _currentTime = ''; // 예: 14:40:05
+  String _currentDate = ''; // 예: 3월 21일 화요일
   Timer? _timer;
 
   @override
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFF3F4F6),
       // 상단 커스텀 AppBar
       appBar: CustomAppBar(
         onMenuPressed: () {
@@ -65,7 +65,8 @@ class _HomePageState extends State<HomePage> {
         },
         onProfilePressed: () {
           Navigator.pushNamed(context, '/profile');
-        }, titleText: '',
+        },
+        titleText: '',
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -73,11 +74,14 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // (1) 인사말
-            const Text(
-              'ewkrjqwekrjkqwer님, 반가워요!',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 8), // 🔹 오른쪽으로 16px 이동
+            //   child: Text(
+            //     '고정윤님, 반가워요!',
+            //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            //   ),
+            // ),
+            // const SizedBox(height: 16),
 
             // (2) 출석률 현황 카드
             _buildAttendanceRateCard(),
@@ -85,7 +89,9 @@ class _HomePageState extends State<HomePage> {
 
             // (3) 날짜/시간 + 출석 버튼 카드
             Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              elevation: 0, // 그림자 제거
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
               color: const Color(0xFF3374F6),
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -101,11 +107,15 @@ class _HomePageState extends State<HomePage> {
 
                     // 시간을 포함한 Column (왼쪽 정렬)
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start, // ★ 텍스트 왼쪽 정렬
+                      crossAxisAlignment:
+                          CrossAxisAlignment.start, // ★ 텍스트 왼쪽 정렬
                       children: [
                         Text(
                           _currentTime,
-                          style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
+                          style: const TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                         const SizedBox(height: 16), // 버튼과 시간 사이 간격 조절
                         SizedBox(
@@ -117,13 +127,18 @@ class _HomePageState extends State<HomePage> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white, // 버튼 배경색
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15), // ★ 모서리 둥글게
+                                borderRadius:
+                                    BorderRadius.circular(15), // ★ 모서리 둥글게
                               ),
-                              padding: const EdgeInsets.symmetric(vertical: 14), // 버튼 높이 조정
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 14), // 버튼 높이 조정
                             ),
                             child: const Text(
                               '출석',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF3374F6)),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF3374F6)),
                             ),
                           ),
                         ),
@@ -149,71 +164,100 @@ class _HomePageState extends State<HomePage> {
 
   // 출석률 현황 카드 (예시)
   Widget _buildAttendanceRateCard() {
-  return Card(
-    color: Colors.white, // 원하는 배경색으로 변경 (예: Colors.white, Colors.blue 등)
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-    child: Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('출석률 현황', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-          const SizedBox(height: 16),
-          // 예: 오늘의 출석률
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text('현재 차시 출석률', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-              Text('80%', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-            ],
-          ),
-          const SizedBox(height: 4),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: LinearProgressIndicator(
-              value: 0.4,
-              minHeight: 8,
-              backgroundColor: Color(0xFFE5E7EB),
-              color: Color(0xFF3374F6),
-            ),
-          ),
-          const SizedBox(height: 16),
-          // 예: 전체 출석률
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text('현재 교과목 출석률', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-              Text('95%', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-            ],
-          ),
-          const SizedBox(height: 4),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: LinearProgressIndicator(
-              value: 0.8,
-              minHeight: 8,
-              backgroundColor: Color(0xFFE5E7EB),
-              color: Color(0xFF3374F6),
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-
-  // 출결관리 카드 (예시)
-  Widget _buildAttendanceCard() {
     return Card(
-      color: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      color: Colors.white, // 원하는 배경색으로 변경 (예: Colors.white, Colors.blue 등)
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      elevation: 0, // 그림자 제거
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('출결관리', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+            const Text('고정윤님이',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+            Row(
+              children: [
+                const Text(
+                  '풀스택과 함께한 시간',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(width: 4), // 텍스트와 이미지 간격 조정
+                Image.asset(
+                  'assets/flower2.png', // 이미지 경로
+                  width: 40, // 폰트 크기와 동일하게 설정
+                  height: 40, // 폰트 크기와 동일하게 설정
+                ),
+              ],
+            ),
+            const SizedBox(height: 5),
+            // 예: 오늘의 출석률
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text('현재 차시 출석률',
+                    style:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                Text('80%',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF3374F6))),
+              ],
+            ),
+            const SizedBox(height: 4),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value: 0.4,
+                minHeight: 8,
+                backgroundColor: Color(0xFFE5E7EB),
+                color: Color(0xFF3374F6),
+              ),
+            ),
+            const SizedBox(height: 16),
+            // 예: 전체 출석률
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text('현재 교과목 출석률',
+                    style:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                Text('95%',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF3374F6))),
+              ],
+            ),
+            const SizedBox(height: 4),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value: 0.8,
+                minHeight: 8,
+                backgroundColor: Color(0xFFE5E7EB),
+                color: Color(0xFF3374F6),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // 출결관리 카드 (예시)
+  Widget _buildAttendanceCard() {
+    return Card(
+      color: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      elevation: 0, // 그림자 제거
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('출결관리',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -221,7 +265,6 @@ class _HomePageState extends State<HomePage> {
                 _buildAttendanceCircle('09:00', Colors.green),
                 _buildAttendanceCircle('10:00', Colors.green),
                 _buildAttendanceCircle('11:00', Colors.green),
-                _buildAttendanceCircle('12:00', Colors.red),
                 _buildAttendanceCircle('13:00', Colors.red),
               ],
             ),
@@ -254,7 +297,8 @@ class _HomePageState extends State<HomePage> {
   Widget _buildNoticeCard() {
     return Card(
       color: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      elevation: 0, // 그림자 제거
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -264,7 +308,9 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('공지사항', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                const Text('공지사항',
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/notice');
@@ -273,12 +319,21 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            const Divider(),
-            const _NoticeItem(title: '2024년도 1학기 출석체크 시스템 변경..', date: '2024.01.15'),
-            const Divider(),
-            const _NoticeItem(title: '겨울방학 기간 출석체크 운영 안내', date: '2024.01.10'),
-            const Divider(),
-            const _NoticeItem(title: '모바일 웹 업데이트 안내 (v2.1.0)', date: '2024.01.05'),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8), // 위아래 여백 추가
+              child: const _NoticeItem(
+                  title: '2024년도 1학기 출석체크 시스템 변경..', date: '2024.01.15'),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8), // 위아래 여백 추가
+              child: const _NoticeItem(
+                  title: '겨울방학 기간 출석체크 운영 안내', date: '2024.01.10'),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8), // 위아래 여백 추가
+              child: const _NoticeItem(
+                  title: '모바일 웹 업데이트 안내 (v2.1.0)', date: '2024.01.15'),
+            ),
           ],
         ),
       ),
@@ -291,7 +346,7 @@ class _HomePageState extends State<HomePage> {
       children: [
         Text(time, style: const TextStyle(fontSize: 12, color: Colors.grey)),
         const SizedBox(height: 4),
-        CircleAvatar(radius: 8, backgroundColor: color),
+        CircleAvatar(radius: 10, backgroundColor: color),
       ],
     );
   }
@@ -313,7 +368,8 @@ class _NoticeItem extends StatelessWidget {
   final String title;
   final String date;
 
-  const _NoticeItem({Key? key, required this.title, required this.date}) : super(key: key);
+  const _NoticeItem({Key? key, required this.title, required this.date})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
