@@ -166,6 +166,9 @@ class _HomePageState extends State<HomePage> {
   Widget _buildAttendanceRateCard() {
     final ValueNotifier<double> _scaleNotifier = ValueNotifier(1.0);
     return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/status');
+      },
       onTapDown: (_) => _scaleNotifier.value = 0.95, // 클릭 시 작아짐
       onTapUp: (_) => _scaleNotifier.value = 1.0, // 손을 떼면 원래 크기로 복귀
       onTapCancel: () => _scaleNotifier.value = 1.0, // 클릭 취소 시 원래 크기로 복귀
@@ -228,17 +231,23 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Transform.translate(
                       offset: Offset(-8, 0),
-                      child: Container(
-                        width: 55,
-                        height: 55,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xFFE0E0E0),
-                        ),
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.white,
-                          size: 45,
+                      child: GestureDetector(
+                        // 클릭 이벤트 추가
+                        onTap: () {
+                          Navigator.pushNamed(context, '/info'); // 페이지 이동
+                        },
+                        child: Container(
+                          width: 55,
+                          height: 55,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xFFE0E0E0),
+                          ),
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                            size: 45,
+                          ),
                         ),
                       ),
                     )
@@ -308,6 +317,9 @@ class _HomePageState extends State<HomePage> {
   Widget _buildAttendanceCard() {
     final ValueNotifier<double> _scaleNotifier = ValueNotifier(1.0);
     return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/attendance');
+      },
       onTapDown: (_) => _scaleNotifier.value = 0.95, // 터치 시 축소
       onTapUp: (_) => _scaleNotifier.value = 1.0, // 터치 해제 시 복구
       onTapCancel: () => _scaleNotifier.value = 1.0, // 터치 취소 시 복구
@@ -376,6 +388,9 @@ class _HomePageState extends State<HomePage> {
   Widget _buildNoticeCard() {
     final ValueNotifier<double> _scaleNotifier = ValueNotifier(1.0);
     return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/notice');
+      },
       onTapDown: (_) => _scaleNotifier.value = 0.95, // 터치 시 축소
       onTapUp: (_) => _scaleNotifier.value = 1.0, // 터치 해제 시 원래 크기로 복구
       onTapCancel: () => _scaleNotifier.value = 1.0, // 터치 취소 시 복구
