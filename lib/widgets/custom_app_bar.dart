@@ -10,7 +10,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     Key? key,
     this.onProfilePressed,
     this.onNotificationsPressed,
-    this.onMenuPressed, required String titleText,
+    this.onMenuPressed,
+    required String titleText,
   }) : super(key: key);
 
   @override
@@ -28,14 +29,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.only(left: 16),
         child: Image.asset(
-          'assets/check_logo.2.png',  // ✅ assets 폴더 경로 포함
+          'assets/check_logo.2.png', // ✅ assets 폴더 경로 포함
           width: 60,
           height: 60, // 원하는 높이로 조정
         ),
       ),
       actions: [
         Padding(
-          padding: const EdgeInsets.only(right: 16),  // 🔹 아이콘들을 왼쪽으로 이동
+          padding: const EdgeInsets.only(right: 10), // 🔹 아이콘들을 왼쪽으로 이동
           child: Row(
             mainAxisSize: MainAxisSize.min, // 🔹 최소 크기로 맞춤
             children: [
