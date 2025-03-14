@@ -9,17 +9,13 @@ class AttendanceStatusPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       // 상단에 CustomAppBar 사용
-      appBar: CustomAppBar(
-        onMenuPressed: () {
-          // 원래 AppBar에서 menu 아이콘을 눌렀을 때 Navigator.pushNamed(context, '/menu')를 호출했음
-          Navigator.pushNamed(context, '/menu');
-        },
-        onNotificationsPressed: () {
-          Navigator.pushNamed(context, '/alarm');
-        },
-        onProfilePressed: () {
-          Navigator.pushNamed(context, '/profile');
-        }, titleText: '',
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_rounded, color: Colors.black87),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
