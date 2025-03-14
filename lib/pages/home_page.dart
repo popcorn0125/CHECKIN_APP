@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF3F4F6),
+      backgroundColor: Color(0xFFf3f4f6),
       // 상단 커스텀 AppBar
       appBar: CustomAppBar(
         onMenuPressed: () {
@@ -74,14 +74,14 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // (1) 인사말
-            // Padding(
-            //   padding: const EdgeInsets.only(left: 8), // 🔹 오른쪽으로 16px 이동
-            //   child: Text(
-            //     '고정윤님, 반가워요!',
-            //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            //   ),
-            // ),
-            // const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.only(left: 8), // 🔹 오른쪽으로 16px 이동
+              child: Text(
+                '고정윤님, 반가워요!',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 16),
 
             // (2) 출석률 현황 카드
             _buildAttendanceRateCard(),

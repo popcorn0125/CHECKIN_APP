@@ -18,7 +18,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      backgroundColor: Color(0xFFF3F4F6),
+      backgroundColor: Color(0xFFf3f4f6),
       // surfaceTintColor가 투명하면, Material 3의 오버레이 효과가 적용되지 않습니다.
       surfaceTintColor: Colors.transparent,
       elevation: 0,
@@ -28,12 +28,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.only(left: 16),
-        child: const Text(
-          '미지의 세계',
-          style: TextStyle(
-            color: Color(0xFFA6A6A6),
-            fontWeight: FontWeight.bold,
-          ),
+        child: Image.asset(
+          'assets/check_logo.2.png', // ✅ assets 폴더 경로 포함
+          width: 60,
+          height: 60, // 원하는 높이로 조정
         ),
       ),
       actions: [
