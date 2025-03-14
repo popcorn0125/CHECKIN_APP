@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// CustomAppBar가 있는 파일을 import
-import '../widgets/custom_app_bar.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AttendanceManagementPage extends StatelessWidget {
   const AttendanceManagementPage({Key? key}) : super(key: key);
@@ -8,69 +8,25 @@ class AttendanceManagementPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // 기존 AppBar 대신 CustomAppBar 사용
-      appBar: CustomAppBar(
-        onMenuPressed: () {
-          // 원래 AppBar에서 menu 아이콘을 눌렀을 때 Navigator.pushNamed(context, '/menu')를 호출했음
-          Navigator.pushNamed(context, '/menu');
-        },
-        onNotificationsPressed: () {
-          Navigator.pushNamed(context, '/alarm');
-        },
-        onProfilePressed: () {
-          Navigator.pushNamed(context, '/profile');
-        }, titleText: '',
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_rounded, color: Colors.black87),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black87),
+      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0), // 간격 조정
         child: Column(
           children: [
-            // 1) 달력 부분 (2월 달력)
-            Card(
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    // "2024년 2월" 제목
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text(
-                          '2024년 2월',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    // 요일 헤더 (일 ~ 토)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: const [
-                        Text('일', style: TextStyle(color: Colors.red)),
-                        Text('월'),
-                        Text('화'),
-                        Text('수'),
-                        Text('목'),
-                        Text('금'),
-                        Text('토', style: TextStyle(color: Colors.blue)),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    // 달력 날짜 (단순 예시 - 실제 로직은 table_calendar 등 사용 권장)
-                    _buildCalendarGrid(),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-
+            // 1) 달력 부분 (앱 넓이를 다 쓰는 실제 달력)
+            _buildCalendar(),
+            // SizedBox(height: 16),
             // 2) 선택된 날짜(2월 5일) 출결 현황 (파란색 박스)
             _buildAttendanceDetailBox(),
           ],
@@ -79,43 +35,60 @@ class AttendanceManagementPage extends StatelessWidget {
     );
   }
 
-  // 달력 Grid (정적인 예시)
-  Widget _buildCalendarGrid() {
-    final days = [
-      ['29', '30', '31', '1',  '2',  '3',  '4'],
-      ['5',  '6',  '7',  '8',  '9',  '10', '11'],
-      ['12', '13', '14', '15', '16', '17', '18'],
-      ['19', '20', '21', '22', '23', '24', '25'],
-      ['26', '27', '28', '',   '',   '',   ''],
-    ];
-
-    return Column(
-      children: days.map((week) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: week.map((day) {
-            final isSelected = (day == '5');
-            return Container(
-              width: 40,
-              height: 40,
-              margin: const EdgeInsets.symmetric(vertical: 4),
-              decoration: BoxDecoration(
-                color: isSelected ? Colors.blue.shade100 : Colors.transparent,
-                borderRadius: BorderRadius.circular(4),
+  // 실제 달력을 표시하는 위젯
+  Widget _buildCalendar() {
+    return TableCalendar(
+      locale: 'ko_KR', // 한글 설정
+      firstDay: DateTime.utc(2020, 1, 1),
+      lastDay: DateTime.utc(2030, 12, 31),
+      focusedDay: DateTime.now(),
+      headerStyle: HeaderStyle(
+        formatButtonVisible: false,
+        titleCentered: true,
+        titleTextStyle: GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+      calendarBuilders: CalendarBuilders(
+        headerTitleBuilder: (context, date) {
+          return Align(
+            alignment: Alignment.center,
+            child: Text(
+              '${date.year}년 ${date.month}월',
+              style: GoogleFonts.roboto(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+          );
+        },
+        dowBuilder: (context, day) {
+          final koreanWeekdays = ['월', '화', '수', '목', '금', '토', '일'];
+          return Center(
+            child: Text(
+              koreanWeekdays[day.weekday - 1], // 1(월)~7(일)
+              style: GoogleFonts.roboto(
+                color: day.weekday == DateTime.saturday || day.weekday == DateTime.sunday
+                    ? Colors.red
+                    : Colors.black,
+                fontWeight: FontWeight.bold,
               ),
-              child: Center(
-                child: Text(
-                  day,
-                  style: TextStyle(
-                    color: isSelected ? Colors.blue : Colors.black87,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
-        );
-      }).toList(),
+            ),
+          );
+        },
+      ),
+      calendarFormat: CalendarFormat.month,
+      daysOfWeekHeight: 30,
+      calendarStyle: CalendarStyle(
+        todayDecoration: BoxDecoration(
+          color: Colors.blue.shade100,
+          shape: BoxShape.circle,
+        ),
+        selectedDecoration: BoxDecoration(
+          color: Color(0xFF3374F6),
+          shape: BoxShape.circle,
+        ),
+        defaultTextStyle: GoogleFonts.roboto(fontWeight: FontWeight.bold),
+        weekendTextStyle: GoogleFonts.roboto(color: Colors.red, fontWeight: FontWeight.bold),
+      ),
+      selectedDayPredicate: (day) {
+        return day.day == 5 && day.month == 3; // 3월 5일 선택
+      },
     );
   }
 
@@ -125,7 +98,7 @@ class AttendanceManagementPage extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.blue, // 파란 배경
+        color: Color(0xFF3374F6), // 파란 배경
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -134,9 +107,9 @@ class AttendanceManagementPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                '2024년 2월 5일 출결현황',
-                style: TextStyle(
+              Text(
+                '2025년 3월 5일 출결현황',
+                style: GoogleFonts.roboto(
                   color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -192,12 +165,12 @@ class AttendanceManagementPage extends StatelessWidget {
           Expanded(
             child: Text(
               timeRange,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: GoogleFonts.roboto(fontWeight: FontWeight.bold),
             ),
           ),
           Text(
             status,
-            style: TextStyle(
+            style: GoogleFonts.roboto(
               color: statusColor,
               fontWeight: FontWeight.bold,
             ),

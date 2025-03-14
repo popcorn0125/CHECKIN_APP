@@ -74,13 +74,13 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // (1) 인사말
-            Padding(
-              padding: const EdgeInsets.only(left: 8), // 🔹 오른쪽으로 16px 이동
-              child: Text(
-                '고정윤님, 반가워요!',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 8), // 🔹 오른쪽으로 16px 이동
+            //   child: Text(
+            //     '고정윤님, 반가워요!',
+            //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            //   ),
+            // ),
             const SizedBox(height: 16),
 
             // (2) 출석률 현황 카드
