@@ -28,11 +28,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.only(left: 16),
-        child: Image.asset(
-          'assets/check_logo.2.png', // ✅ assets 폴더 경로 포함
-          width: 60,
-          height: 60, // 원하는 높이로 조정
-        ),
+        // child: Image.asset(
+        //   'assets/check_logo.2.png', // ✅ assets 폴더 경로 포함
+        //   width: 60,
+        //   height: 60, // 원하는 높이로 조정
+        // ),
       ),
       actions: [
         Padding(
@@ -40,11 +40,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min, // 🔹 최소 크기로 맞춤
             children: [
-              IconButton(
-                icon: const Icon(Icons.person, color: Color(0xFFa6a6a6)),
-                iconSize: 27,
-                onPressed: onProfilePressed,
-              ),
+              // IconButton(
+              //   icon: const Icon(Icons.person, color: Color(0xFFa6a6a6)),
+              //   iconSize: 27,
+              //   onPressed: onProfilePressed,
+              // ),
               IconButton(
                 icon: const Icon(Icons.notifications, color: Color(0xFFa6a6a6)),
                 iconSize: 27,
