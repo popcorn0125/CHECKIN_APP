@@ -1,0 +1,314 @@
+// lib/pages/home_page.dart
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // 시간 포맷팅용
+import 'dart:async';            // Timer 사용
+import 'package:checkinapp/widgets/custom_app_bar.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  // 현재 시각(HH:mm:ss)와 날짜(월,일,요일) 문자열 변수
+  String _currentTime = '';  // 예: 14:40:05
+  String _currentDate = '';  // 예: 3월 21일 화요일
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    // 초기 업데이트
+    _updateDateTime();
+
+    // 1초마다 시간/날짜 갱신 (날짜는 굳이 초 단위로 바꿀 필요는 없지만, 간단히 처리)
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _updateDateTime();
+    });
+  }
+
+  // 현재 시간과 날짜를 업데이트
+  void _updateDateTime() {
+    // 로컬 시간
+    final now = DateTime.now().toLocal();
+    // 시분초 포맷
+    final timeFormatted = DateFormat('HH:mm:ss').format(now);
+    // 날짜+요일 (예: "3월 21일 화요일")
+    final dateFormatted = DateFormat('M월 d일 EEEE', 'ko_KR').format(now);
+
+    setState(() {
+      _currentTime = timeFormatted;
+      _currentDate = dateFormatted;
+    });
+  }
+
+  @override
+  void dispose() {
+    // Timer 해제
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      // 상단 커스텀 AppBar
+      appBar: CustomAppBar(
+        onMenuPressed: () {
+          Navigator.pushNamed(context, '/menu');
+        },
+        onNotificationsPressed: () {
+          Navigator.pushNamed(context, '/alarm');
+        },
+        onProfilePressed: () {
+          Navigator.pushNamed(context, '/profile');
+        }, titleText: '',
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // (1) 인사말
+            const Text(
+              '홍길동님, 반가워요!',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+
+            // (2) 출석률 현황 카드
+            _buildAttendanceRateCard(),
+            const SizedBox(height: 16),
+
+            // (3) 날짜/시간 + 출석 버튼 카드
+            Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              color: const Color(0xFF3374F6),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // ★동적 날짜/요일 표시
+                    Text(
+                      '오늘은 $_currentDate이에요 :)',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // ★동적 시각 표시
+                        Text(
+                          _currentTime,
+                          style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            // TODO: 출석 처리 로직
+                          },
+                          child: const Text('출석'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // (4) 출결관리 카드
+            _buildAttendanceCard(),
+            const SizedBox(height: 16),
+
+            // (5) 공지사항 카드
+            _buildNoticeCard(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // 출석률 현황 카드 (예시)
+  Widget _buildAttendanceRateCard() {
+  return Card(
+    color: Colors.white, // 원하는 배경색으로 변경 (예: Colors.white, Colors.blue 등)
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    child: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('출석률 현황', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+          const SizedBox(height: 16),
+          // 예: 오늘의 출석률
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Text('오늘의 출석률'),
+              Text('40%'),
+            ],
+          ),
+          const SizedBox(height: 4),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: 0.4,
+              minHeight: 8,
+              backgroundColor: Colors.grey,
+              color: Colors.blue,
+            ),
+          ),
+          const SizedBox(height: 16),
+          // 예: 전체 출석률
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Text('전체 출석률'),
+              Text('80%'),
+            ],
+          ),
+          const SizedBox(height: 4),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: 0.8,
+              minHeight: 8,
+              backgroundColor: Colors.grey,
+              color: Colors.blue,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+
+  // 출결관리 카드 (예시)
+  Widget _buildAttendanceCard() {
+    return Card(
+      color: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('출결관리', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildAttendanceCircle('09:00', Colors.green),
+                _buildAttendanceCircle('10:00', Colors.green),
+                _buildAttendanceCircle('11:00', Colors.green),
+                _buildAttendanceCircle('12:00', Colors.red),
+                _buildAttendanceCircle('13:00', Colors.red),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildAttendanceCircle('14:00', Colors.green),
+                _buildAttendanceCircle('15:00', Colors.green),
+                _buildAttendanceCircle('16:00', Colors.green),
+                _buildAttendanceCircle('17:00', Colors.green),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildLegend(Colors.green, '출석'),
+                _buildLegend(Colors.red, '결석'),
+                _buildLegend(Colors.orange, '지각'),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // 공지사항 카드 (예시)
+  Widget _buildNoticeCard() {
+    return Card(
+      color: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 상단: 제목 + 더보기
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('공지사항', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/notice');
+                  },
+                  child: const Text('더보기 +'),
+                ),
+              ],
+            ),
+            const Divider(),
+            const _NoticeItem(title: '2024년도 1학기 출석체크 시스템 변경..', date: '2024.01.15'),
+            const Divider(),
+            const _NoticeItem(title: '겨울방학 기간 출석체크 운영 안내', date: '2024.01.10'),
+            const Divider(),
+            const _NoticeItem(title: '모바일 웹 업데이트 안내 (v2.1.0)', date: '2024.01.05'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // 출결관리 시간 + 동그라미
+  Widget _buildAttendanceCircle(String time, Color color) {
+    return Column(
+      children: [
+        Text(time, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+        const SizedBox(height: 4),
+        CircleAvatar(radius: 8, backgroundColor: color),
+      ],
+    );
+  }
+
+  // 출결관리 범례
+  Widget _buildLegend(Color color, String label) {
+    return Row(
+      children: [
+        CircleAvatar(radius: 6, backgroundColor: color),
+        const SizedBox(width: 4),
+        Text(label),
+      ],
+    );
+  }
+}
+
+// 공지사항 아이템
+class _NoticeItem extends StatelessWidget {
+  final String title;
+  final String date;
+
+  const _NoticeItem({Key? key, required this.title, required this.date}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
+        const SizedBox(height: 4),
+        Text(date, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+      ],
+    );
+  }
+}
