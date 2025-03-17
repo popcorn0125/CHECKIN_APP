@@ -10,14 +10,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     Key? key,
     this.onProfilePressed,
     this.onNotificationsPressed,
-    this.onMenuPressed, required String titleText,
+    this.onMenuPressed,
+    required String titleText,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFf3f4f6),
       // surfaceTintColor가 투명하면, Material 3의 오버레이 효과가 적용되지 않습니다.
       surfaceTintColor: Colors.transparent,
       elevation: 0,
@@ -27,26 +28,35 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.only(left: 16),
-        child: const Text(
-          'CHECK IN',
-          style: TextStyle(
-            color: Colors.black54,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        // child: Image.asset(
+        //   'assets/check_logo.2.png', // ✅ assets 폴더 경로 포함
+        //   width: 60,
+        //   height: 60, // 원하는 높이로 조정
+        // ),
       ),
       actions: [
-        IconButton(
-          icon: const Icon(Icons.person, color: Colors.grey),
-          onPressed: onProfilePressed,
-        ),
-        IconButton(
-          icon: const Icon(Icons.notifications, color: Colors.grey),
-          onPressed: onNotificationsPressed,
-        ),
-        IconButton(
-          icon: const Icon(Icons.menu, color: Colors.grey),
-          onPressed: onMenuPressed,
+        Padding(
+          padding: const EdgeInsets.only(right: 10), // 🔹 아이콘들을 왼쪽으로 이동
+          child: Row(
+            mainAxisSize: MainAxisSize.min, // 🔹 최소 크기로 맞춤
+            children: [
+              // IconButton(
+              //   icon: const Icon(Icons.person, color: Color(0xFFa6a6a6)),
+              //   iconSize: 27,
+              //   onPressed: onProfilePressed,
+              // ),
+              IconButton(
+                icon: const Icon(Icons.notifications, color: Color(0xFFa6a6a6)),
+                iconSize: 27,
+                onPressed: onNotificationsPressed,
+              ),
+              IconButton(
+                icon: const Icon(Icons.menu, color: Color(0xFFa6a6a6)),
+                iconSize: 27,
+                onPressed: onMenuPressed,
+              ),
+            ],
+          ),
         ),
       ],
     );
