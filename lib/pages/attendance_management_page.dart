@@ -2,8 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AttendanceManagementPage extends StatelessWidget {
+class AttendanceManagementPage extends StatefulWidget {
   const AttendanceManagementPage({Key? key}) : super(key: key);
+
+  @override
+  _AttendanceManagementPageState createState() => _AttendanceManagementPageState();
+}
+
+class _AttendanceManagementPageState extends State<AttendanceManagementPage> {
+  DateTime? _selectedDate;
+  bool _isAttendanceBoxVisible = false;
+  double _attendanceBoxHeight = -300; // 처음에는 숨김 상태로 시작
+
+  // 날짜 클릭 시 출결현황 박스를 보이게 하거나 숨기는 함수
+  void _onDaySelected(DateTime selectedDay) {
+    setState(() {
+      // 같은 날짜를 두 번 클릭하면 박스를 숨기고, 다른 날짜 클릭 시 박스 표시
+      if (_selectedDate == selectedDay) {
+        _isAttendanceBoxVisible = !_isAttendanceBoxVisible;
+      } else {
+        _selectedDate = selectedDay;
+        _isAttendanceBoxVisible = true;
+      }
+      _attendanceBoxHeight = _isAttendanceBoxVisible ? 0 : -300; // 슬라이드 애니메이션을 위한 위치 설정
+    });
+  }
+
+  // 출결현황 박스를 닫는 함수
+  void _closeAttendanceBox() {
+    setState(() {
+      _attendanceBoxHeight = -300; // 박스를 내리기 위해 위치 조정
+      _isAttendanceBoxVisible = false;
+    });
+  }
+
+  // 터치로 박스를 내릴 때
+  void _onTapToClose() {
+    setState(() {
+      _attendanceBoxHeight = -300; // 박스를 내리기
+      _isAttendanceBoxVisible = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +60,26 @@ class AttendanceManagementPage extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.black87),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0), // 간격 조정
+        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
         child: Column(
           children: [
-            // 1) 달력 부분 (앱 넓이를 다 쓰는 실제 달력)
+            // 1) 달력 부분
             _buildCalendar(),
-            // SizedBox(height: 16),
-            // 2) 선택된 날짜(2월 5일) 출결 현황 (파란색 박스)
-            _buildAttendanceDetailBox(),
+            const SizedBox(height: 16),
+            // 2) 선택된 날짜의 출결현황 (애니메이션 효과)
+            GestureDetector(
+              onTap: _onTapToClose, // 출결박스를 터치하면 닫기
+              child: AnimatedPositioned(
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+                bottom: _attendanceBoxHeight, // 애니메이션을 통한 위치 변화
+                left: 0,
+                right: 0,
+                child: _isAttendanceBoxVisible
+                    ? _buildAttendanceDetailBox()
+                    : Container(), // 출결박스가 보이지 않으면 빈 컨테이너
+              ),
+            ),
           ],
         ),
       ),
@@ -38,7 +89,7 @@ class AttendanceManagementPage extends StatelessWidget {
   // 실제 달력을 표시하는 위젯
   Widget _buildCalendar() {
     return TableCalendar(
-      locale: 'ko_KR', // 한글 설정
+      locale: 'ko_KR',
       firstDay: DateTime.utc(2020, 1, 1),
       lastDay: DateTime.utc(2030, 12, 31),
       focusedDay: DateTime.now(),
@@ -61,7 +112,7 @@ class AttendanceManagementPage extends StatelessWidget {
           final koreanWeekdays = ['월', '화', '수', '목', '금', '토', '일'];
           return Center(
             child: Text(
-              koreanWeekdays[day.weekday - 1], // 1(월)~7(일)
+              koreanWeekdays[day.weekday - 1],
               style: GoogleFonts.roboto(
                 color: day.weekday == DateTime.saturday || day.weekday == DateTime.sunday
                     ? Colors.red
@@ -87,42 +138,38 @@ class AttendanceManagementPage extends StatelessWidget {
         weekendTextStyle: GoogleFonts.roboto(color: Colors.red, fontWeight: FontWeight.bold),
       ),
       selectedDayPredicate: (day) {
-        return day.day == 5 && day.month == 3; // 3월 5일 선택
+        return _selectedDate != null && day.isSameDate(_selectedDate!);
+      },
+      onDaySelected: (selectedDay, focusedDay) {
+        _onDaySelected(selectedDay);
       },
     );
   }
 
-  // 파란색 박스 (2024년 2월 5일 출결현황 + 시간별 리스트)
+  // 출결현황 박스
   Widget _buildAttendanceDetailBox() {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Color(0xFF3374F6), // 파란 배경
-        borderRadius: BorderRadius.circular(8),
+        color: Color(0xFF3374F6),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
       ),
       child: Column(
         children: [
-          // 상단 바 (타이틀 + X 버튼)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '2025년 3월 5일 출결현황',
-                style: GoogleFonts.roboto(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                '${_selectedDate?.year}년 ${_selectedDate?.month}월 ${_selectedDate?.day}일 출결현황',
+                style: GoogleFonts.roboto(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
               ),
               InkWell(
-                onTap: () {
-                  // TODO: 닫기 로직
-                },
-                child: const Icon(
-                  Icons.close,
-                  color: Colors.white,
-                ),
+                onTap: _closeAttendanceBox,
+                child: const Icon(Icons.close, color: Colors.white),
               ),
             ],
           ),
@@ -157,7 +204,7 @@ class AttendanceManagementPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white, // 흰색 배경
+        color: Colors.white,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -170,13 +217,16 @@ class AttendanceManagementPage extends StatelessWidget {
           ),
           Text(
             status,
-            style: GoogleFonts.roboto(
-              color: statusColor,
-              fontWeight: FontWeight.bold,
-            ),
+            style: GoogleFonts.roboto(color: statusColor, fontWeight: FontWeight.bold),
           ),
         ],
       ),
     );
+  }
+}
+
+extension DateTimeComparison on DateTime {
+  bool isSameDate(DateTime other) {
+    return this.year == other.year && this.month == other.month && this.day == other.day;
   }
 }
