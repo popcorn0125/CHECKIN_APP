@@ -60,7 +60,7 @@ class MenuPage extends StatelessWidget {
                       icon: const Icon(Icons.arrow_forward_ios_rounded,
                           color: Color(0xFF9CA3AF)),
                       onPressed: () {
-                        // Navigator.pop(context);
+                        Navigator.pushNamed(context, '/profile');
                       },
                     ),
                   ],

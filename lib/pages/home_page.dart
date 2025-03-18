@@ -63,9 +63,9 @@ class _HomePageState extends State<HomePage> {
         onNotificationsPressed: () {
           Navigator.pushNamed(context, '/alarm');
         },
-        onProfilePressed: () {
-          Navigator.pushNamed(context, '/profile');
-        },
+        // onProfilePressed: () {
+        //   Navigator.pushNamed(context, '/profile');
+        // },
         titleText: '',
       ),
       body: SingleChildScrollView(
@@ -234,7 +234,7 @@ class _HomePageState extends State<HomePage> {
                       child: GestureDetector(
                         // 클릭 이벤트 추가
                         onTap: () {
-                          Navigator.pushNamed(context, '/info'); // 페이지 이동
+                          Navigator.pushNamed(context, '/profile'); // 페이지 이동
                         },
                         child: Container(
                           width: 55,
