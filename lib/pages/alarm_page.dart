@@ -4,7 +4,7 @@ import '../widgets/custom_app_bar.dart';
 // 간단한 알림 데이터 모델
 class AlarmItem {
   final String title; // 알림 제목
-  final String time;  // 예: "방금 전", "2시간 전", "어제", 날짜 등
+  final String time; // 예: "방금 전", "2시간 전", "어제", 날짜 등
   bool isRead; // 읽었는지 여부를 나타내는 속성
 
   AlarmItem(this.title, this.time, {this.isRead = false});
@@ -40,21 +40,16 @@ class _AlarmPageState extends State<AlarmPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        onMenuPressed: () {
-          Navigator.pushNamed(context, '/menu');
-        }, 
-        onNotificationsPressed: () {
-          Navigator.pushNamed(context, '/alarm');
-        },
-        onProfilePressed: () {
-          Navigator.pushNamed(context, '/profile');
-        }, 
-        titleText: '',
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFF3F4F6),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_rounded, color: Colors.black87),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
-      
       backgroundColor: const Color(0xFFf3f4f6),
-
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -83,7 +78,8 @@ class _AlarmPageState extends State<AlarmPage> {
             Expanded(
               child: ListView.separated(
                 itemCount: alarms.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 12),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 12),
                 itemBuilder: (context, index) {
                   final alarm = alarms[index];
                   return _buildAlarmItem(alarm);
@@ -125,9 +121,11 @@ class _AlarmPageState extends State<AlarmPage> {
               children: [
                 // 읽지 않은 알림은 파란색 원, 읽은 알림은 회색 원 아이콘으로 표시
                 Icon(
-                  Icons.circle, 
-                  size: 8, 
-                  color: alarm.isRead ? Colors.grey : Colors.blue, // 읽은 알림은 회색, 읽지 않은 알림은 파란색
+                  Icons.circle,
+                  size: 8,
+                  color: alarm.isRead
+                      ? Colors.grey
+                      : Colors.blue, // 읽은 알림은 회색, 읽지 않은 알림은 파란색
                 ),
                 const SizedBox(width: 8),
                 Text(
