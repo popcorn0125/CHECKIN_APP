@@ -32,7 +32,7 @@ class MenuPage extends StatelessWidget {
                         radius: 30,
                         backgroundColor: Colors.grey.shade300,
                         child: const Icon(Icons.person,
-                            size: 35, color: Colors.white),
+                            size: 45, color: Color(0xFF9CA3AF)),
                       ),
                     ),
                     const SizedBox(width: 10), // 아이콘과 텍스트 사이 여백 추가
@@ -48,7 +48,10 @@ class MenuPage extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const Text('내 정보 관리'),
+                          const Text(
+                            '내 정보 관리',
+                            style: TextStyle(fontSize: 13, color: Colors.grey),
+                          ),
                         ],
                       ),
                     ),
@@ -62,7 +65,7 @@ class MenuPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 16),
               ],
             ),
             // ────────────── 홈, 출석률 현황, 출결 관리, 공지사항 영역 ──────────────
@@ -88,7 +91,7 @@ class MenuPage extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
             // ────────────── 알림, 설정 영역 ──────────────
             Card(
               color: Colors.white,
@@ -104,7 +107,7 @@ class MenuPage extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
             // ────────────── 로그아웃 영역 ──────────────
             Card(
               color: Colors.white,
