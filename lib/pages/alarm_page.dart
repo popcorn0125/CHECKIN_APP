@@ -30,6 +30,12 @@ class AlarmPage extends StatelessWidget {
         onMenuPressed: () {
           // 원래 AppBar에서 menu 아이콘을 눌렀을 때 Navigator.pushNamed(context, '/menu')를 호출했음
           Navigator.pushNamed(context, '/menu');
+        }, 
+        onNotificationsPressed: () {
+          Navigator.pushNamed(context, '/alarm');
+        },
+        onProfilePressed: () {
+          Navigator.pushNamed(context, '/profile');
         }, titleText: '',
         
       ),
