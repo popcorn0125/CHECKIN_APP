@@ -1,4 +1,3 @@
-// lib/pages/notice_page.dart
 import 'package:flutter/material.dart';
 import '../widgets/custom_app_bar.dart';
 
@@ -26,10 +25,9 @@ class NoticePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // 커스텀 AppBar 사용
+      // 커스텀 AppBar 사용 (이 부분은 필요에 따라 그대로 두되, titleText를 비워두거나 간단하게 처리)
       appBar: CustomAppBar(
         onMenuPressed: () {
-          // 원래 AppBar에서 menu 아이콘을 눌렀을 때 Navigator.pushNamed(context, '/menu')를 호출했음
           Navigator.pushNamed(context, '/menu');
         },
         onNotificationsPressed: () {
@@ -37,19 +35,60 @@ class NoticePage extends StatelessWidget {
         },
         onProfilePressed: () {
           Navigator.pushNamed(context, '/profile');
-        }, titleText: '',
+        },
+        titleText: '', // AppBar에는 제목을 표시하지 않음
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        // 공지사항 목록
-        child: ListView.separated(
-          itemCount: notices.length,
-          separatorBuilder: (context, index) => const SizedBox(height: 12),
-          itemBuilder: (context, index) {
-            final notice = notices[index];
-            return _buildNoticeItem(notice);
-          },
-        ),
+      // 전체 페이지 배경색
+      backgroundColor: const Color(0xFFf3f4f6),
+
+      // 본문 구성
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // 1) 페이지 타이틀
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+            child: Text(
+              '공지사항',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey.shade900,
+              ),
+            ),
+          ),
+
+          // 2) 공지사항 목록 (ListView)
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: ListView.separated(
+                itemCount: notices.length,
+                separatorBuilder: (context, index) => const SizedBox(height: 12),
+                itemBuilder: (context, index) {
+                  final notice = notices[index];
+                  return _buildNoticeItem(notice);
+                },
+              ),
+            ),
+          ),
+
+          // 3) 페이지네이션 영역 (예시)
+          Container(
+            padding: const EdgeInsets.only(bottom: 16),
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildPageButton('1', isActive: true),
+                const SizedBox(width: 8),
+                _buildPageButton('2'),
+                const SizedBox(width: 8),
+                _buildPageButton('3'),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -90,6 +129,27 @@ class NoticePage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  // 페이지 번호 버튼 예시
+  Widget _buildPageButton(String text, {bool isActive = false}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: isActive ? Colors.blue : Colors.white,
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(
+          color: isActive ? Colors.blue : Colors.grey.shade300,
+        ),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: isActive ? Colors.white : Colors.black87,
+          fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+        ),
       ),
     );
   }
