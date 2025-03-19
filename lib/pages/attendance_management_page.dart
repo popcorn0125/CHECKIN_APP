@@ -165,7 +165,7 @@ class _AttendanceManagementPageState extends State<AttendanceManagementPage> {
             children: [
               Text(
                 '${_selectedDate?.year}년 ${_selectedDate?.month}월 ${_selectedDate?.day}일 출결현황',
-                style: GoogleFonts.roboto(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                style: GoogleFonts.roboto(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
               ),
               InkWell(
                 onTap: _closeAttendanceBox,
@@ -212,12 +212,12 @@ class _AttendanceManagementPageState extends State<AttendanceManagementPage> {
           Expanded(
             child: Text(
               timeRange,
-              style: GoogleFonts.roboto(fontWeight: FontWeight.bold),
+              style: GoogleFonts.roboto(fontWeight: FontWeight.w600),
             ),
           ),
           Text(
             status,
-            style: GoogleFonts.roboto(color: statusColor, fontWeight: FontWeight.bold),
+            style: GoogleFonts.roboto(color: statusColor, fontWeight: FontWeight.w500),
           ),
         ],
       ),

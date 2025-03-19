@@ -136,8 +136,9 @@ class _HomePageState extends State<HomePage> {
                             child: const Text(
                               '출석',
                               style: TextStyle(
+                                  fontFamily: 'SpoqaHanSans',
                                   fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
                                   color: Color(0xFF3374F6)),
                             ),
                           ),
