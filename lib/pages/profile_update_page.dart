@@ -72,22 +72,13 @@ class _profileUpdatePageState extends State<ProfileUpdatePage> {
               child: TextField(
                 controller: _controller,
                 autofocus: true,
-                // decoration: const InputDecoration(
-                //   hintText: 'Enter ${widget.label}',
-                // ),
+                decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black87)),
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFF3374F6)))),
               ),
             ),
-            // SizedBox(
-            //   width: double.maxFinite,
-            //   height: 50,
-            //   child: ElevatedButton(
-            //     onPressed: () {
-            //       // 버튼 클릭 시 입력된 값 출력
-            //       print('입력한 ${widget.label}: ${_controller.text}');
-            //     },
-            //     child: const Text('확인'),
-            //   ),
-            // ),
           ],
         ),
       ),
@@ -102,7 +93,7 @@ class _profileUpdatePageState extends State<ProfileUpdatePage> {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              backgroundColor: Colors.blue, // 파란색 배경
+              backgroundColor: Color(0xFF3374F6), // 파란색 배경
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.zero, // 둥근 모서리 제거
               ),
@@ -113,10 +104,11 @@ class _profileUpdatePageState extends State<ProfileUpdatePage> {
             child: const Text(
               '확인',
               style: TextStyle(
-                fontFamily: 'TossProductSans',
-                fontSize: 16,
-                color: Colors.white, // 흰색 글자
-              ),
+                  fontFamily: 'TossProductSans',
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600 // 흰색 글자
+                  ),
             ),
           ),
         ),
