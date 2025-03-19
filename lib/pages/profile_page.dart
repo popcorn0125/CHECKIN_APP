@@ -1,5 +1,6 @@
+import 'package:checkinapp/pages/profile_update_page.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -17,6 +18,14 @@ class ProfilePage extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
+        title: Text(
+          '김민수님의 정보',
+          style: TextStyle(
+              fontFamily: 'TossProductSans',
+              color: Colors.black87,
+              fontSize: 16),
+        ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -39,11 +48,11 @@ class ProfilePage extends StatelessWidget {
                   const SizedBox(height: 16),
                   _buildProfileSection(),
                   const SizedBox(height: 16),
-                  _buildInfoRow('이름', '김민수'),
+                  _buildInfoRow('이름', '김민수', context),
                   const SizedBox(height: 1),
-                  _buildInfoRow('휴대폰 번호', '010-1234-5678'),
+                  _buildInfoRow('휴대폰 번호', '010-1234-5678', context),
                   const SizedBox(height: 1),
-                  _buildInfoRow('이메일 주소', 'minsu.kim@email.com'),
+                  _buildInfoRow('이메일 주소', 'minsu123@cu.ac.kr', context),
                   const SizedBox(height: 1),
                 ],
               ),
@@ -66,7 +75,7 @@ class ProfilePage extends StatelessWidget {
                   const SizedBox(height: 1),
                   _buildInfoRow2('학년', '3학년'),
                   const SizedBox(height: 1),
-                  _buildInfoRow2('학교명', '서울대학교'),
+                  _buildInfoRow2('학교명', '대구가톨릭대학교'),
                   const SizedBox(height: 1),
                 ],
               ),
@@ -92,7 +101,7 @@ class ProfilePage extends StatelessWidget {
               backgroundColor: Colors.grey.shade300,
               child: Icon(
                 Icons.person,
-                size: 60,
+                size: 65,
                 color: const Color(0xFF9CA3AF),
               ),
             ),
@@ -127,24 +136,29 @@ class ProfilePage extends StatelessWidget {
   }
 
   // 2) 수정 가능한 정보 행 (예: "이름" - "김민수")
-  Widget _buildInfoRow(String label, String value) {
+  //
+  Widget _buildInfoRow(String label, String value, BuildContext context) {
     return ListTile(
-      title: Text(label,
-          style: GoogleFonts.roboto(
-              color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500)),
+      title: Text(
+        label,
+        style: TextStyle(
+          fontFamily: 'TossProductSans', // 등록한 폰트 이름
+          color: Colors.black,
+          fontSize: 16,
+          // fontWeight: FontWeight.w500,
+        ),
+      ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min, // Row 크기 최소화
         children: [
           Padding(
             padding: const EdgeInsets.only(right: 13),
-            child: Text(
-              value,
-
-              style: GoogleFonts.roboto(
-                color: Color(0xFF9CA3AF),
-                fontSize: 16,
-              ), // Roboto 글꼴 적용
-            ),
+            child: Text(value,
+                style: TextStyle(
+                  fontFamily: 'TossProductSans', // 등록한 폰트 이름
+                  color: Color(0xFF9CA3AF),
+                  fontSize: 16,
+                )),
           ),
           const Icon(Icons.arrow_forward_ios_rounded,
               size: 15, color: Color(0xFF9CA3AF)),
@@ -152,16 +166,28 @@ class ProfilePage extends StatelessWidget {
       ),
       onTap: () {
         // TODO: 수정 페이지 이동 등 (필요하다면)
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProfileUpdatePage(
+                      label: label,
+                      value: value,
+                    )));
       },
     );
   }
 
-  // 2) 수정 불가능한 정보 행
   Widget _buildInfoRow2(String label, String value) {
     return ListTile(
-      title: Text(label,
-          style: GoogleFonts.roboto(
-              color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500)),
+      title: Text(
+        label,
+        style: TextStyle(
+          fontFamily: 'TossProductSans', // 등록한 폰트 이름
+          color: Colors.black,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min, // Row 크기 최소화
         children: [
@@ -169,11 +195,11 @@ class ProfilePage extends StatelessWidget {
             padding: const EdgeInsets.only(right: 0),
             child: Text(
               value,
-
-              style: GoogleFonts.roboto(
+              style: TextStyle(
+                fontFamily: 'TossProductSans', // 등록한 폰트 이름
                 color: Color(0xFF9CA3AF),
                 fontSize: 16,
-              ), // Roboto 글꼴 적용
+              ),
             ),
           ),
         ],
