@@ -39,7 +39,7 @@ class AttendanceStatusPage extends StatelessWidget {
 
   // ------------------ 차시별 출석률(지원금) ------------------
   Widget _buildSessionAttendanceCard() {
-    Color progressColor = Colors.blue; // 파란색
+    Color progressColor = Color(0xFF3374F6); // 파란색
     return Card(
       color: Colors.white,
       elevation: 0, // 그림자 제거
