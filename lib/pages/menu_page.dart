@@ -103,7 +103,9 @@ class MenuPage extends StatelessWidget {
                   _buildMenuItem(Icons.notifications, '알림', onTap: () {
                     Navigator.pushNamed(context, '/alarm');
                   }),
-                  _buildMenuItem(Icons.settings, '설정', onTap: () {}),
+                  _buildMenuItem(Icons.settings, '설정', onTap: () {
+                    Navigator.pushNamed(context, '/setting');
+                  }),
                 ],
               ),
             ),
