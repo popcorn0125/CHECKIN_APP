@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import '../widgets/custom_app_bar.dart';
 
 // 간단한 공지사항 데이터 모델
 class Notice {
   final String title; // 공지 제목
-  final String time; // 게시 시간 (예: "방금 전", "2시간 전", "어제", "2024.01.13" 등)
+  final String time;  // 게시 시간 (예: "방금 전", "2시간 전", "어제", "2024.01.13" 등)
   bool isRead; // 읽었는지 여부를 저장
 
   Notice(this.title, this.time, {this.isRead = false});
 }
 
-// 공지사항 세부 페이지
 class NoticeDetailPage extends StatelessWidget {
   final Notice notice;
 
@@ -48,7 +46,7 @@ class NoticeDetailPage extends StatelessWidget {
                 children: [
                   Text(
                     notice.title,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 10),
                   Text(
@@ -118,7 +116,6 @@ class NoticePage extends StatefulWidget {
 }
 
 class _NoticePageState extends State<NoticePage> {
-  // 예시 공지사항 데이터
   final List<Notice> notices = [
     Notice('3월 신학기 출석체크 시스템 업데이트 안내', '방금 전'),
     Notice('2024학년도 1학기 시간표 변경 안내', '2시간 전'),
@@ -126,22 +123,24 @@ class _NoticePageState extends State<NoticePage> {
     Notice('통계학과 방학 수학일정 안내', '2024.01.15'),
     Notice('2024년도 1학기 장학금 신청 안내', '2024.01.13'),
     Notice('겨울방학 기간 도서관 이용 안내', '2024.01.13'),
+    Notice('겨울방학 기간 도서관 이용 안내', '2024.01.13'),
+    Notice('겨울방학 기간 도서관 이용 안내', '2024.01.13'),
+    Notice('겨울방학 기간 도서관 이용 안내', '2024.01.13'),
+    Notice('겨울방학 기간 도서관 이용 안내', '2024.01.13'),
+    Notice('겨울방학 기간 도서관 이용 안내', '2024.01.13'),
+    Notice('겨울방학 기간 도서관 이용 안내', '2024.01.13'),
+    Notice('겨울방학 기간 도서관 이용 안내', '2024.01.13'),
   ];
 
-  // 페이지 네비게이션을 위한 페이지 번호
-  int currentPage = 1;
-  int itemsPerPage = 6;
+  String searchQuery = ''; // 검색 텍스트
 
   @override
   Widget build(BuildContext context) {
-    // 페이지에 맞는 공지사항 데이터 필터링
-    int startIndex = (currentPage - 1) * itemsPerPage;
-    int endIndex = startIndex + itemsPerPage;
-    List<Notice> currentNotices = notices.sublist(
-        startIndex, endIndex > notices.length ? notices.length : endIndex);
-
-    // 전체 페이지 수 계산
-    int totalPages = (notices.length / itemsPerPage).ceil();
+    // 검색된 공지사항 목록 필터링
+    List<Notice> filteredNotices = notices
+        .where((notice) =>
+            notice.title.toLowerCase().contains(searchQuery.toLowerCase()))
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -152,6 +151,22 @@ class _NoticePageState extends State<NoticePage> {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          // 검색 버튼 추가
+          IconButton(
+            icon: Icon(Icons.search, color: Colors.black87),
+            onPressed: () async {
+              // 검색 바 표시
+              String? result = await showSearch(
+                context: context,
+                delegate: NoticeSearchDelegate(),
+              );
+              setState(() {
+                searchQuery = result ?? ''; // 검색어 업데이트
+              });
+            },
+          ),
+        ],
       ),
       backgroundColor: const Color(0xFFF3F4F6), // 공지사항 페이지와 동일한 배경색
       body: Column(
@@ -159,11 +174,11 @@ class _NoticePageState extends State<NoticePage> {
         children: [
           // 1) 페이지 타이틀
           Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 25),
             child: Text(
               '공지사항',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Colors.grey.shade900,
                 fontFamily: 'Roboto', // Roboto 폰트 적용
@@ -176,32 +191,14 @@ class _NoticePageState extends State<NoticePage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: ListView.separated(
-                itemCount: currentNotices.length,
+                itemCount: filteredNotices.length, // 필터링된 공지사항만 표시
                 separatorBuilder: (context, index) =>
                     const SizedBox(height: 12),
                 itemBuilder: (context, index) {
-                  final notice = currentNotices[index];
+                  final notice = filteredNotices[index];
                   return _buildNoticeItem(notice, context);
                 },
               ),
-            ),
-          ),
-
-          // 3) 페이지네이션 영역
-          Padding(
-            padding: const EdgeInsets.only(bottom: 140, left: 16, right: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(totalPages, (index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: _buildPageButton('${index + 1}', onPressed: () {
-                    setState(() {
-                      currentPage = index + 1;
-                    });
-                  }),
-                );
-              }),
             ),
           ),
         ],
@@ -278,40 +275,67 @@ class _NoticePageState extends State<NoticePage> {
       ),
     );
   }
+}
 
-  // 페이지 번호 버튼
-  Widget _buildPageButton(String text, {void Function()? onPressed}) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: text == '$currentPage' ? Colors.blue : Colors.transparent,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: text == '$currentPage' ? Colors.blue : Colors.transparent,
-          ),
-        ),
-        child: text == '$currentPage'
-            ? Text(
-                text,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Roboto',
-                  fontSize: 14,
-                ),
-              )
-            : Text(
-                text,
-                style: TextStyle(
-                  color: Colors.grey.shade600,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Roboto',
-                  fontSize: 14,
-                ),
-              ),
+class NoticeSearchDelegate extends SearchDelegate<String> {
+  final List<String> searchResults = [
+    '3월 신학기 출석체크 시스템 업데이트 안내',
+    '2024학년도 1학기 시간표 변경 안내',
+    '도서관 운영시간 변경 안내',
+    '통계학과 방학 수학일정 안내',
+    '2024년도 1학기 장학금 신청 안내',
+    '겨울방학 기간 도서관 이용 안내',
+  ];
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = ''; // 검색어 초기화
+        },
       ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, ''); // 검색 종료
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return ListView(
+      children: searchResults
+          .where((result) => result.toLowerCase().contains(query.toLowerCase()))
+          .map((result) => ListTile(
+                title: Text(result),
+                onTap: () {
+                  close(context, result); // 검색 결과 클릭 시
+                },
+              ))
+          .toList(),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return ListView(
+      children: searchResults
+          .where((result) => result.toLowerCase().contains(query.toLowerCase()))
+          .map((result) => ListTile(
+                title: Text(result),
+                onTap: () {
+                  close(context, result); // 검색 제안 클릭 시
+                },
+              ))
+          .toList(),
     );
   }
 }
