@@ -8,6 +8,7 @@ import 'pages/attendance_status_page.dart';
 import 'pages/notice_page.dart';
 import 'pages/alarm_page.dart';
 import 'pages/profile_page.dart';
+import 'pages/setting_page.dart';
 // (다른 페이지들도 import)
 
 void main() async {
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         '/notice': (context) => NoticePage(),           // 공지사항화면
         '/alarm': (context) => AlarmPage(),             // 알림함화면
         '/profile': (context) => const ProfilePage(),   // 내정보화면
+        '/setting': (context) => const SettingPage(),   // 설정화면
       },
     );
   }

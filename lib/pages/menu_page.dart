@@ -60,7 +60,7 @@ class MenuPage extends StatelessWidget {
                       icon: const Icon(Icons.arrow_forward_ios_rounded,
                           color: Color(0xFF9CA3AF)),
                       onPressed: () {
-                        // Navigator.pop(context);
+                        Navigator.pushNamed(context, '/profile');
                       },
                     ),
                   ],
@@ -103,7 +103,9 @@ class MenuPage extends StatelessWidget {
                   _buildMenuItem(Icons.notifications, '알림', onTap: () {
                     Navigator.pushNamed(context, '/alarm');
                   }),
-                  _buildMenuItem(Icons.settings, '설정', onTap: () {}),
+                  _buildMenuItem(Icons.settings, '설정', onTap: () {
+                    Navigator.pushNamed(context, '/setting');
+                  }),
                 ],
               ),
             ),
